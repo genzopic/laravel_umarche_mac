@@ -6,7 +6,25 @@ use Illuminate\Http\Request;
 
 class LifeCycleTestController extends Controller
 {
-    //
+    // サービスプロバイダの例
+    public function showServiceProviderTest()
+    {
+        // 暗号化のサービスプロバイダを呼び出して使う
+        $encrypt = app()->make('encrypter');
+        $password = $encrypt->encrypt('password');
+
+        // サービスプロバイダの生成
+        // php artisan make:provider SampleServiceProvider
+        // App¥Providers配下に生成される
+        // 作成されたファイルのregisterにサービスコンテナーに登録処理を記載し、app\config\app.phpのProvidersに追記する
+        $sample = app()->make('serviceProviderTest');
+
+        dd($sample,$password,$encrypt->decrypt($password));
+
+
+
+    }
+    // サービスコンテナの例
     public function showServiceContainerTest()
     {
 

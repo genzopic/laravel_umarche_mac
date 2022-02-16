@@ -27,8 +27,10 @@ Route::get('/dashboard', function () {
 Route::get('/component-test1',[ComponentTestController::class,'showComponent1']);
 Route::get('/component-test2',[ComponentTestController::class,'showComponent2']);
 
-// サービスコンテナー
+// サービスコンテナーの例
 Route::get('/servicecontainertest',[LifeCycleTestController::class,'showServiceContainerTest']);
+// サービスプロバイダーの例
+Route::get('/serviceprovidertest',[LifeCycleTestController::class,'showServiceProviderTest']);
 
 
 require __DIR__.'/auth.php';
