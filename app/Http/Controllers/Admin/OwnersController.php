@@ -4,6 +4,11 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+//
+use App\Models\Owner;                   // Eloquent エロクアント
+use Illuminate\Support\Facades\DB;      // QueryBuilder クエリビルダー
+//
+use Carbon\Carbon;
 
 class OwnersController extends Controller
 {
@@ -13,15 +18,32 @@ class OwnersController extends Controller
         $this->middleware('auth:admin');
     }
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
+        // カーボンテスト
+        $date_now = Carbon::now();
+        $date_parse = Carbon::parse(now());
+        echo $date_now->year;
+        echo $date_parse;
+
+        // エロクアント
+        $e_all = Owner::all();
+
+        // クエリビルダー
+        $q_get = DB::table('owners')->select('name','created_at')->get();
+        // $q_first = DB::table('owners')->select('name','created_at')->first();
+
+        // コレクション
+        // $c_test = collect([
+        //     'name' => 'てすと'
+        // ]);
+
+        // var_dump($q_first);
         //
-        dd('オーナー一覧です');
+        // dd($e_all,$q_get,$q_first,$c_test);
+        return view('admin.owners.index',
+        compact('e_all','q_get'));
+        
     }
 
     /**
