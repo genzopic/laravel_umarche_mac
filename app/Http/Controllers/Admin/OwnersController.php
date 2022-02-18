@@ -86,7 +86,9 @@ class OwnersController extends Controller
         // 一覧画面に戻る
         return redirect()
         ->route('admin.owners.index')
-        ->with('message','オーナー登録を実施しました');
+        ->with(['message' => 'オーナー登録を実施しました',
+                'status' => 'info',
+                ]);
 
     }
 
@@ -136,7 +138,9 @@ class OwnersController extends Controller
         // 一覧画面に戻る
         return redirect()
         ->route('admin.owners.index')
-        ->with('message','オーナー情報を更新しました');
+        ->with(['message' =>'オーナー情報を更新しました',
+                'status' => 'info',
+                ]);
         
     }
 
@@ -148,6 +152,31 @@ class OwnersController extends Controller
      */
     public function destroy($id)
     {
-        //
+        // 削除
+        Owner::findOrFail($id)->delete(); //ソフトデリート
+
+        // 一覧画面に戻る
+        return redirect()
+        ->route('admin.owners.index')
+        ->with(['message' => 'オーナー情報を削除しました',
+                'status' => 'alert',
+                ]);
     }
+
+    //---------------------------------------------------------
+    // 期限切れオーナー一覧
+    public function expiredOwnerIndex(){
+        // 削除日があるものだけ取得
+        $expiredOwners = Owner::onlyTrashed()->get();
+        // 一覧に戻る
+        return view('admin.expired-owners',compact('expiredOwners'));
+    }
+    // 期限切れオーナー削除
+    public function expiredOwnerDestroy($id){
+        // 強制削除
+        Owner::onlyTrashed()->findOrFail($id)->forceDelete();
+        // 一覧に戻る
+        return redirect()->route('admin.expired-owners.index');
+    }
+
 }
