@@ -178,5 +178,12 @@ class OwnersController extends Controller
         // 一覧に戻る
         return redirect()->route('admin.expired-owners.index');
     }
+    // 期限切れオーナー復元
+    public function expiredOwnerRestore($id){
+        // 復元
+        Owner::onlyTrashed()->findOrFail($id)->restore();
+        // 一覧に戻る
+        return redirect()->route('admin.expired-owners.index');
+    }
 
 }

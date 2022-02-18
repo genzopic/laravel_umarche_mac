@@ -20,7 +20,7 @@
                                   <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100 rounded-tl rounded-bl">名前</th>
                                   <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">メールアドレス</th>
                                   <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100">期限が切れた日</th>
-                                  <!-- <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100 rounded-tr rounded-br"></th> -->
+                                  <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100 rounded-tr rounded-br"></th>
                                   <th class="px-4 py-3 title-font tracking-wider font-medium text-gray-900 text-sm bg-gray-100 rounded-tr rounded-br"></th>
                                 </tr>
                               </thead>
@@ -30,11 +30,12 @@
                                   <td class="px-4 py-3">{{ $owner->name }}</td>
                                   <td class="px-4 py-3">{{ $owner->email }}</td>
                                   <td class="px-4 py-3">{{ $owner->deleted_at->diffForHumans() }}</td>
-                                  <!--
-                                  <td class="px-4 py-3">
-                                    <button onclick="location.href='{{ route('admin.owners.edit',['owner' => $owner->id]) }}'" class="text-white bg-indigo-400 border-0 py-2 px-4 focus:outline-none hover:bg-indigo-500 rounded">編集</button>
-                                  </td>
-                                  -->
+                                  <form id="restore_{{$owner->id}}" method="post" action="{{ route('admin.expired-owners.restore',['owner' => $owner->id]) }}">
+                                    @csrf
+                                    <td class="px-4 py-3">
+                                        <a href="#" data-id="{{ $owner->id }}" onclick="restorePost(this)" class="text-white bg-green-400 border-0 py-2 px-4 focus:outline-none hover:bg-green-500 rounded">復元</a>
+                                    </td>
+                                  </form>
                                   <form id="delete_{{$owner->id}}" method="post" action="{{ route('admin.expired-owners.destroy',['owner' => $owner->id]) }}">
                                     @csrf
                                     <td class="px-4 py-3">
@@ -68,6 +69,12 @@
         'use strict';
         if (confirm('本当に削除してもいいですか?')) {
           document.getElementById('delete_' + e.dataset.id).submit(); 
+        }
+      }
+      function restorePost(e) {
+        'use strict';
+        if (confirm('本当に復元してもいいですか?')) {
+          document.getElementById('restore_' + e.dataset.id).submit(); 
         }
       }
     </script>

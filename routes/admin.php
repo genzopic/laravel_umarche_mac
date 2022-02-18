@@ -39,6 +39,8 @@ Route::prefix('expired-owners')
                 ->name('expired-owners.index');
             Route::post('destroy/{owner}', [OwnersController::class, 'expiredOwnerDestroy'])
                 ->name('expired-owners.destroy');
+            Route::post('restore/{owner}', [OwnersController::class, 'expiredOwnerRestore'])
+            ->name('expired-owners.restore');
             });
 
 // ダッシュボード
