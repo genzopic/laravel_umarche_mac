@@ -44,7 +44,9 @@ class OwnersController extends Controller
         // dd($e_all,$q_get,$q_first,$c_test);
 
         // 一覧画面
-        $owners = Owner::select('id','name','email','created_at')->get();
+        // $owners = Owner::select('id','name','email','created_at')->get();
+        // ページネーション対応
+        $owners = Owner::select('id','name','email','created_at')->paginate(3);
 
         return view('admin.owners.index',compact('owners'));
 
