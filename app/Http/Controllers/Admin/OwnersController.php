@@ -43,10 +43,10 @@ class OwnersController extends Controller
         //
         // dd($e_all,$q_get,$q_first,$c_test);
 
-        $owners = Owner::select('name','email','created_at')->get();
+        // 一覧画面
+        $owners = Owner::select('id','name','email','created_at')->get();
 
-        return view('admin.owners.index',
-        compact('owners'));
+        return view('admin.owners.index',compact('owners'));
 
     }
 
@@ -57,7 +57,7 @@ class OwnersController extends Controller
      */
     public function create()
     {
-        //
+        // 作成画面
         return view('admin.owners.create');
     }
 
@@ -76,7 +76,7 @@ class OwnersController extends Controller
             'password' => 'required|string|confirmed|min:8',
         ]);
 
-        // 保存
+        // 保存処理
         Owner::create([
             'name' => $request->name,
             'email' => $request->email,
@@ -109,7 +109,12 @@ class OwnersController extends Controller
      */
     public function edit($id)
     {
-        //
+        // 編集画面
+        $owner = Owner::findorFail($id);
+        // dd($owner);
+
+        return view('admin.owners.edit',compact('owner'));
+
     }
 
     /**
@@ -121,7 +126,18 @@ class OwnersController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        // 更新処理
+        $owner = Owner::findorFail($id);
+        $owner->name = $request->name;
+        $owner->email = $request->email;
+        $owner->password = Hash::make($request->password);
+        $owner->save();
+
+        // 一覧画面に戻る
+        return redirect()
+        ->route('admin.owners.index')
+        ->with('message','オーナー情報を更新しました');
+        
     }
 
     /**
