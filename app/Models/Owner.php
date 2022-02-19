@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 //
 use Illuminate\Database\Eloquent\SoftDeletes;
+use App\Models\Shop;
 
 class Owner extends Authenticatable
 {
@@ -41,5 +42,12 @@ class Owner extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    //
+    public function shop()
+    {
+        // 1:1
+        return $this->hasOne(shop::class);
+    }
 
 }
