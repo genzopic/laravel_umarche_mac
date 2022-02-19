@@ -23,13 +23,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('admin.welcome');
-});
+// Route::get('/', function () {
+//     return view('admin.welcome');
+// });
 
 // オーナー管理
 Route::resource('owners',OwnersController::class)
-    ->middleware('auth:admin');
+    ->middleware('auth:admin')
+    ->except(['show']);
 
 // 期限切れオーナー管理
 Route::prefix('expired-owners')
