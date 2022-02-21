@@ -11,6 +11,14 @@ class Shop extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'owner_id',
+        'name',
+        'information',
+        'filename',
+        'is_selling',
+    ];
+
     //
     public function owner()
     {

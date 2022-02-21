@@ -6,11 +6,13 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 //
 use App\Models\Owner;                   // Eloquent エロクアント
+use App\Models\Shop;
 use Illuminate\Support\Facades\DB;      // QueryBuilder クエリビルダー
-//
-use Carbon\Carbon;
-use Illuminate\Support\Facades\Hash;
-
+use Carbon\Carbon;                      // 日付拡張ライブラリ
+use Illuminate\Support\Facades\Hash;    // 
+// ログ＆例外
+use Throwable;
+use Illuminate\Support\Facades\Log;
 
 class OwnersController extends Controller
 {
@@ -79,11 +81,25 @@ class OwnersController extends Controller
         ]);
 
         // 保存処理
-        Owner::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
+        try {
+            DB::transaction(function() use($request) {
+                $owner = Owner::create([
+                    'name' => $request->name,
+                    'email' => $request->email,
+                    'password' => Hash::make($request->password),
+                ]);
+                Shop::create([
+                    'owner_id' =>  $owner->id,
+                    'name' => '店名を入力してください',
+                    'information' => '',
+                    'filename' => '',
+                    'is_selling' => true,
+                ]);
+            },2);
+        } catch(Throwable $e) {
+            Log::error($e);     // ログ出力
+            throw $e;           // 画面に表示
+        }
 
         // 一覧画面に戻る
         return redirect()
