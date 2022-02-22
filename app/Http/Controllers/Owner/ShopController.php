@@ -9,8 +9,9 @@ use Illuminate\Support\Facades\Auth;        // ログインユーザー
 use App\Models\Shop;                        // shopモデル
 use Illuminate\Contracts\Cache\Store;
 use Illuminate\Support\Facades\DB;          // QueryBuilder クエリビルダー
-//
-use Illuminate\Support\Facades\Storage;     // 画像アップロード＝Storage::putFileで保存
+// 画像関連
+use Illuminate\Support\Facades\Storage;     // 画像保存
+use InterventionImage;                      // 画像リサイズ
 
 class ShopController extends Controller
 {
@@ -43,6 +44,7 @@ class ShopController extends Controller
     // 一覧
     public function index()
     {
+
         $owner_id = Auth::id();
         $shops = Shop::where('owner_id',$owner_id)->get();
 
@@ -76,7 +78,18 @@ class ShopController extends Controller
         $imageFile = $request->image;
         // 選択されていて、かつ妥当なものかの判定
         if(!is_null($imageFile) && $imageFile->isValid()){
-            Storage::putFile('public/shops',$imageFile);
+            // リサイズなしの場合（ファイル名は自動でユニークにしてくれる）
+            // Storage::putFile('public/shops',$imageFile);
+
+            // リサイズありの場合
+            // ファイル名を作成
+            $fileName = uniqid(rand().'_');                     // ユニークなファイル名を作成
+            $extension = $imageFile->extension();               // 拡張子を退避
+            $fileNameToStore = $fileName . '.' . $extension;
+            // リサイズ
+            $resizedImage = InterventionImage::make($imageFile)->resize(1920, 1080)->encode();
+            Storage::put('public/shops/' . $fileNameToStore,$resizedImage);
+
         }
         // 戻る
         return redirect()->route('owner.shops.index');
