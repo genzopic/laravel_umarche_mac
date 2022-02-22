@@ -10,10 +10,7 @@ use App\Models\Shop;                        // shopモデル
 use Illuminate\Contracts\Cache\Store;       // 
 use Illuminate\Support\Facades\DB;          // QueryBuilder クエリビルダー
 use App\Http\Requests\UploadImageRequest;   // リクエストバリデーション
-// 画像関連
-// use Illuminate\Support\Facades\Storage;     // 画像保存
-// use InterventionImage;                      // 画像リサイズ
-use App\Services\ImageService;
+use App\Services\ImageService;              // 画像保存
 
 
 class ShopController extends Controller
@@ -81,6 +78,7 @@ class ShopController extends Controller
         $imageFile = $request->image;
         // 選択されていて、かつ妥当なものかの判定
         if(!is_null($imageFile) && $imageFile->isValid()){
+            // 画像を保存
             $fileNameToStore = ImageService::upload($imageFile, 'shops');
         }
         // 戻る
