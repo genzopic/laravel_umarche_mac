@@ -7,13 +7,13 @@ use Illuminate\Http\Request;
 //
 use Illuminate\Support\Facades\Auth;        // ログインユーザー
 use App\Models\Shop;                        // shopモデル
-use Illuminate\Contracts\Cache\Store;
+use Illuminate\Contracts\Cache\Store;       // 
 use Illuminate\Support\Facades\DB;          // QueryBuilder クエリビルダー
+use App\Http\Requests\UploadImageRequest;   // リクエストバリデーション
 // 画像関連
-use Illuminate\Support\Facades\Storage;     // 画像保存
-use InterventionImage;                      // 画像リサイズ
-//
-use App\Http\Requests\UploadImageRequest;
+// use Illuminate\Support\Facades\Storage;     // 画像保存
+// use InterventionImage;                      // 画像リサイズ
+use App\Services\ImageService;
 
 
 class ShopController extends Controller
@@ -81,18 +81,7 @@ class ShopController extends Controller
         $imageFile = $request->image;
         // 選択されていて、かつ妥当なものかの判定
         if(!is_null($imageFile) && $imageFile->isValid()){
-            // リサイズなしの場合（ファイル名は自動でユニークにしてくれる）
-            // Storage::putFile('public/shops',$imageFile);
-
-            // リサイズありの場合
-            // ファイル名を作成
-            $fileName = uniqid(rand().'_');                     // ユニークなファイル名を作成
-            $extension = $imageFile->extension();               // 拡張子を退避
-            $fileNameToStore = $fileName . '.' . $extension;
-            // リサイズ
-            $resizedImage = InterventionImage::make($imageFile)->resize(1920, 1080)->encode();
-            Storage::put('public/shops/' . $fileNameToStore,$resizedImage);
-
+            $fileNameToStore = ImageService::upload($imageFile, 'shops');
         }
         // 戻る
         return redirect()->route('owner.shops.index');
