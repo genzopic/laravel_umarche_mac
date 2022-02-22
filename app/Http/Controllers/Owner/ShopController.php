@@ -7,7 +7,10 @@ use Illuminate\Http\Request;
 //
 use Illuminate\Support\Facades\Auth;        // ログインユーザー
 use App\Models\Shop;                        // shopモデル
+use Illuminate\Contracts\Cache\Store;
 use Illuminate\Support\Facades\DB;          // QueryBuilder クエリビルダー
+//
+use Illuminate\Support\Facades\Storage;     // 画像アップロード＝Storage::putFileで保存
 
 class ShopController extends Controller
 {
@@ -55,7 +58,9 @@ class ShopController extends Controller
      */
     public function edit($id)
     {
-        dd(Shop::findOrFail($id));
+        $shop = Shop::findOrFail($id);
+        return view('owner.shops.edit',compact('shop'));
+
     }
 
     /**
@@ -67,7 +72,14 @@ class ShopController extends Controller
      */
     public function update(Request $request, $id)
     {
-        
+        // inputのnameでimageとしたので、
+        $imageFile = $request->image;
+        // 選択されていて、かつ妥当なものかの判定
+        if(!is_null($imageFile) && $imageFile->isValid()){
+            Storage::putFile('public/shops',$imageFile);
+        }
+        // 戻る
+        return redirect()->route('owner.shops.index');
     }
  
 
