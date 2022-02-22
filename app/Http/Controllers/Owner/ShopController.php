@@ -12,6 +12,9 @@ use Illuminate\Support\Facades\DB;          // QueryBuilder クエリビルダ�
 // 画像関連
 use Illuminate\Support\Facades\Storage;     // 画像保存
 use InterventionImage;                      // 画像リサイズ
+//
+use App\Http\Requests\UploadImageRequest;
+
 
 class ShopController extends Controller
 {
@@ -72,7 +75,7 @@ class ShopController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UploadImageRequest $request, $id)
     {
         // inputのnameでimageとしたので、
         $imageFile = $request->image;
