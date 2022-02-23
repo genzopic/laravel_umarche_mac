@@ -13,7 +13,7 @@ class ImageService
      * @param mixed $imageFile  画像ファイル
      * @param mixed $folderName public配下のフォルダ名（publicは不要）
      * 
-     * @return string   保存したファイル名
+     * @return string $fileNameToStore 保存したファイル名
      */
     public static function upload($imageFile, $folderName){
 

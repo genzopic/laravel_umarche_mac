@@ -1,7 +1,8 @@
+@props(['filename'])
 <div>
-    @if(empty($shop->filename))
-        <img src="{{ asset('images/no_image.jpg') }}" alt="">
+    @if(empty($filename))
+        <img src="{{ asset('images/no_image.jpg') }}" alt="no image">
     @else
-        <img src="{{ asset('storage/shops/'.$shop->filename)}}" alt="">
+        <img src="{{ asset('storage/shops/'.$filename)}}" alt="">
     @endif
 </div>
