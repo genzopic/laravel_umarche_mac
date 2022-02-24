@@ -19,7 +19,7 @@ class Shop extends Model
         'is_selling',
     ];
 
-    //
+    // リレーションの設定
     public function owner()
     {
         return $this->belongsTo(Owner::class);

@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 //
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\Shop;
+use App\Models\Image;
 
 class Owner extends Authenticatable
 {
@@ -43,11 +44,16 @@ class Owner extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    //
+    // リレーション設定
     public function shop()
     {
         // 1:1
-        return $this->hasOne(shop::class);
+        return $this->hasOne(Shop::class);
+    }
+    public function image()
+    {
+        // 1:N
+        return $this->hasMany(Image::class);
     }
 
 }

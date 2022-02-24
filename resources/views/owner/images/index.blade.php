@@ -11,29 +11,28 @@
                 <div class="p-6 bg-white border-b border-gray-200">
                     <!-- flashメッセージ -->
                     <x-flash-message status="session('status')" />
-                    <!-- 店舗情報一覧 -->
-                    @foreach ($shops as $shop)
-                        <div class="w-1/2 p-4">
-                            <a href="{{ route('owner.shops.edit',['shop' => $shop->id]) }}">
+                    <!-- 新規作成 -->
+                    <div class="flex justify-end mb-4">
+                        <button onclick="location.href='{{ route('owner.images.create') }}'" class="text-white bg-indigo-500 border-0 py-2 px-8 focus:outline-none hover:bg-indigo-600 rounded text-lg">新規登録する</button>
+                    </div>
+                    <!-- 画像一覧 -->
+                    @foreach ($images as $image)
+                        <div class="w-1/4 p-4">
+                            <a href="{{ route('owner.images.edit',['image' => $image->id]) }}">
                                 <div class="border rounded-md p-4">
                                     <div class="mb-4">
-                                        <!-- 販売中・停止中 -->
-                                        @if($shop->is_selling)
-                                            <span class="border p-2 rounded-md bg-blue-400 text-white">販売中</span>
-                                        @else
-                                            <span class="border p-2 rounded-md bg-red-400 text-white">停止中</span>
-                                        @endif
-                                        <!-- 店名 -->
+                                        <!-- タイトル -->
                                         <div class="text-xl mt-4">
-                                            {{ $shop->name }}
+                                            {{ $image->title }}
                                         </div>
                                         <!-- サムネイル -->
-                                        <x-thumbnail :filename="$shop->filename" type="shops" />
+                                        <x-thumbnail :filename="$image->filename" type="products" />
                                     </div>
                                 </div>
                             </a>
                         </div>
                     @endforeach
+                    {{ $images->links() }}
                 </div>
             </div>
         </div>
