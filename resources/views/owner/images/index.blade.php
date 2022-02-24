@@ -18,16 +18,16 @@
                     <!-- 画像一覧 -->
                     <div class="flex flex-wrap">
                         @foreach ($images as $image)
-                        <div class="w-1/4 p-4">
+                        <div class="w-1/4 p-2 md:p-4">
                             <a href="{{ route('owner.images.edit',['image' => $image->id]) }}">
-                                <div class="border rounded-md p-4">
+                                <div class="border rounded-md p-2 md:p-4">
                                     <div class="mb-4">
-                                        <!-- タイトル -->
-                                        <div class="text-xl mt-4">
-                                            {{ $image->title }}
-                                        </div>
                                         <!-- サムネイル -->
                                         <x-thumbnail :filename="$image->filename" type="products" />
+                                        <!-- タイトル -->
+                                        <div class="text-gray-700">
+                                            {{ $image->title }}
+                                        </div>
                                     </div>
                                 </div>
                             </a>
