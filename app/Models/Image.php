@@ -9,7 +9,7 @@ use App\Models\Owner;
 class Image extends Model
 {
     use HasFactory;
-
+    // 更新項目の設定
     protected $fillable = [
         'owner_id',
         'filename',

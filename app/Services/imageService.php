@@ -16,13 +16,18 @@ class ImageService
      * @return string $fileNameToStore 保存したファイル名
      */
     public static function upload($imageFile, $folderName){
-
+        
         // ファイル名を作成
+        if(is_array($imageFile)){
+            $file = $imageFile['image'];
+        } else {
+            $file = $imageFile;
+        }
         $fileName = uniqid(rand().'_');                     // ユニークなファイル名を作成
-        $extension = $imageFile->extension();               // 拡張子を退避
+        $extension = $file->extension();               // 拡張子を退避
         $fileNameToStore = $fileName . '.' . $extension;
         // リサイズ
-        $resizedImage = InterventionImage::make($imageFile)->resize(1920, 1080)->encode();
+        $resizedImage = InterventionImage::make($file)->resize(1920, 1080)->encode();
         Storage::put('public/' . $folderName . '/' . $fileNameToStore,$resizedImage);
 
         return $fileNameToStore;
