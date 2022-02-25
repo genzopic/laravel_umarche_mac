@@ -19,7 +19,7 @@ class ShopController extends Controller
     {
         // 認証チェック
         $this->middleware('auth:owners');
-        // 
+        // ログインオーナーのものかをチェック
         $this->middleware(function(Request $request,$next) {
             // dd($request->route()->parameter('shop'));   // 文字列
             // dd(Auth::id()); // 数字

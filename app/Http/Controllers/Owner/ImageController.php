@@ -18,13 +18,13 @@ class ImageController extends Controller
     {
         // 認証チェック
         $this->middleware('auth:owners');
-        // 
+        // ログインオーナーのものかをチェック
         $this->middleware(function(Request $request,$next) {
 
             $id = $request->route()->parameter('image'); // imageのidを取得
             if(!is_null($id)){
                 // owner/images/indexにアクセスするとnullになるので
-                // それ以外の場合（owner/shops/edit/{shop}）
+                // それ以外の場合（owner/images/edit/{image}）
                 $imagesOwnerId = Image::findOrFail($id)->owner->id;
                 if($imagesOwnerId !== Auth::id()) {
                     // ログインしたオーナーと違う場合は、404
