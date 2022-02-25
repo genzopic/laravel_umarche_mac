@@ -10,6 +10,7 @@ use App\Http\Controllers\Owner\Auth\RegisteredUserController;
 use App\Http\Controllers\Owner\Auth\VerifyEmailController;
 use App\Http\Controllers\Owner\ShopController;
 use App\Http\Controllers\Owner\ImageController;
+use App\Http\Controllers\Owner\ProductController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -27,6 +28,11 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('owner.welcome');
 });
+
+// 商品管理
+Route::resource('products',ProductController::class)
+    ->middleware('auth:owners')
+    ->except(['show']);
 
 // shop管理
 Route::prefix('shops')
