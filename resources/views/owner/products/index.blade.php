@@ -24,13 +24,11 @@
                                         <div class="border rounded-md p-2 md:p-4">
                                             <div class="mb-4">
                                                 {{-- サムネイル --}}
-                                                <x-thumbnail :filename="$product->imageFirst->filename" type="products" />
+                                                <x-thumbnail filename="{{ $product->imageFirst->filename ?? ''}}" type="products" />
                                                 {{-- タイトル --}}
-                                                {{--
                                                 <div class="text-gray-700">
                                                     {{ $product->name }}
                                                 </div> 
-                                                --}}
                                             </div>
                                         </div>
                                     </a>

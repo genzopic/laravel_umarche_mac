@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 //
 use App\Models\Owner;                   // Eloquent エロクアント
 use App\Models\Shop;
-use Illuminate\Support\Facades\DB;      // QueryBuilder クエリビルダー
+use Illuminate\Support\Facades\DB;      // DB
 use Carbon\Carbon;                      // 日付拡張ライブラリ
 use Illuminate\Support\Facades\Hash;    // 
 // ログ＆例外

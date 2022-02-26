@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 //
 use Illuminate\Support\Facades\Auth;        // ログインユーザー
 use App\Models\Shop;                        // shopモデル
-use Illuminate\Support\Facades\DB;          // QueryBuilder クエリビルダー
+use Illuminate\Support\Facades\DB;          // DB
 use App\Http\Requests\UploadImageRequest;   // リクエストバリデーション
 use App\Services\ImageService;              // 画像保存
 
