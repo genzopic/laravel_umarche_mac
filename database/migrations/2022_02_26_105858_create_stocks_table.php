@@ -20,7 +20,7 @@ class CreateStocksTable extends Migration
                 ->constrained()
                 ->onUpdate('cascade')
                 ->onDelete('cascade');
-            $table->tinyInteger('type');        // 1: 2: 
+            $table->tinyInteger('type');        // 1:入庫 2:出庫 
             $table->integer('quantity');
             $table->timestamps();
         });

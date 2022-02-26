@@ -24,7 +24,7 @@ class StockSeeder extends Seeder
             ],
             [
                 'product_id' => 1,
-                'type' => 1,
+                'type' => 2,
                 'quantity' => -2,
             ],
         ]);
