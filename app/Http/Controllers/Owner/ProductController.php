@@ -121,7 +121,6 @@ class ProductController extends Controller
                     'information' => $request->information,
                     'price' => $request->price,
                     'sort_order' => $request->sort_order,
-                    'quantity' => $request->quantity,
                     'shop_id' => $request->shop_id,
                     'secondary_category_id' => $request->category,
                     'image1' => $request->image1,
@@ -193,18 +192,59 @@ class ProductController extends Controller
         $request->validate([
             'current_quantity' => 'required|integer',
         ]);
-        // 現在在庫数が変わっていないか確認
+
         $product = Product::findOrFail($id);
         $quantity = Stock::where('product_id',$product->id)
             ->sum('quantity');
+        
+        // 現在在庫数が変わっていないか確認
         if($request->current_quantity !== $quantity){
+            // 変わっていたら戻す
             $id = $request->route()->parameter('product');
             return redirect()->route('owner.products.edit',['product'=>$id])
                 ->with(['message' => '在庫数が変更されています。再度確認してください' ,
                         'status' => 'alert']);
+        } else {
+            // 変わってなかったら保存処理
+            try {
+                DB::transaction(function() use($request,$product) {
+                    $product->name = $request->name;
+                    $product->information = $request->information;
+                    $product->price = $request->price;
+                    $product->sort_order = $request->sort_order;
+                    $product->shop_id = $request->shop_id;
+                    $product->secondary_category_id = $request->category;
+                    $product->image1 = $request->image1;
+                    $product->image2 = $request->image2;
+                    $product->image3 = $request->image3;
+                    $product->image4 = $request->image4;
+                    $product->is_selling = $request->is_selling;
+                    $product->save();
+
+                    if($request->type === "1"){
+                        $newQuantity = $request->quantity;
+                    }
+                    if($request->type === "2"){
+                        $newQuantity = $request->quantity * -1;
+                    }
+                    Stock::create([
+                        'product_id' => $product->id,
+                        'type' => $request->type,           // 1:入庫
+                        'quantity' => $newQuantity,
+                    ]);
+                },2);
+            } catch(Throwable $e) {
+                Log::error($e);     // ログ出力
+                throw $e;           // 画面に表示
+            }
+            // 一覧画面に戻る
+            return redirect()
+            ->route('owner.products.index')
+            ->with(['message' => '商品情報を登録を実施しました',
+                    'status' => 'info',
+                    ]);
+            
         }
-
-
         
     }
 
