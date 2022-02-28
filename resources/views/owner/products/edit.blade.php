@@ -56,8 +56,8 @@
                             {{-- 入出庫選択 --}}
                             <div class="p-2 w-1/2 mx-auto">
                                 <div class="relative flex justify-around">
-                                    <div><input type="radio" name="type" id="type" value="1" class="mr-2" checked>追加</div>
-                                    <div><input type="radio" name="type" id="type" value="2" class="mr-2" >削減</div>
+                                    <div><input type="radio" name="type" id="type" value="{{ \Constant::PRODUCT_LIST['add'] }}" class="mr-2" checked>追加</div>
+                                    <div><input type="radio" name="type" id="type" value="{{ \Constant::PRODUCT_LIST['reduce'] }}" class="mr-2" >削減</div>
                                 </div>
                             </div>
                             {{-- 数量 --}}
@@ -102,10 +102,10 @@
                         {{-- 画像選択 --}}
                         <div class="p-2 w-1/2 mx-auto">
                             <label for="sort_order" class="leading-7 text-sm text-gray-600">画像</label>
-                            <x-select-image :images="$images" currendId="{{$product->image1}}" currentImage="{{$product->imageFirst->filename ?? ''}}" name="image1" />
-                            <x-select-image :images="$images" currendId="{{$product->image2}}" currentImage="{{$product->imageSecond->filename ?? ''}}" name="image2" />
-                            <x-select-image :images="$images" currendId="{{$product->image3}}" currentImage="{{$product->imageThird->filename ?? ''}}" name="image3" />
-                            <x-select-image :images="$images" currendId="{{$product->image4}}" currentImage="{{$product->imageFourth->filename ?? ''}}" name="image4" />
+                            <x-select-image :images="$images" currentId="{{$product->image1}}" currentImage="{{$product->imageFirst->filename ?? ''}}" name="image1" />
+                            <x-select-image :images="$images" currentId="{{$product->image2}}" currentImage="{{$product->imageSecond->filename ?? ''}}" name="image2" />
+                            <x-select-image :images="$images" currentId="{{$product->image3}}" currentImage="{{$product->imageThird->filename ?? ''}}" name="image3" />
+                            <x-select-image :images="$images" currentId="{{$product->image4}}" currentImage="{{$product->imageFourth->filename ?? ''}}" name="image4" />
                             <x-select-image :images="$images" name="image5" />
                         </div>
                         {{-- 販売中、停止中 --}}

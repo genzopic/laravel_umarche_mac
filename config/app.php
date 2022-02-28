@@ -234,7 +234,7 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         //
         'InterventionImage' => Intervention\Image\Facades\Image::class,
-
+        'Constant' => App\Constants\Common::class,
     ],
 
 ];
