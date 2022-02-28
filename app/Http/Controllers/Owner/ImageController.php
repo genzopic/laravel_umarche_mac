@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 //
 use App\Models\Image;                       // Imageモデル
+use App\Models\Product;                     // Productモデル
 use Illuminate\Support\Facades\Auth;        // ログインユーザー
 use App\Http\Requests\UploadImageRequest;   // リクエストバリデーション
 use App\Services\ImageService;              // 画像保存
@@ -143,13 +144,40 @@ class ImageController extends Controller
         $image = Image::findOrFail($id);
         $filePath = 'public/products/' . $image->filename;
 
+        $imageInProducts = Product::where('image1',$image->id)
+                        ->orWhere('image2',$image->id)
+                        ->orWhere('image3',$image->id)
+                        ->orWhere('image4',$image->id)
+                        ->get();
+        
+        if($imageInProducts) {
+            $imageInProducts->each(function($product) use($image) {
+                if($product->image1 === $image->id){
+                    $product->image1 = null;
+                    $product->save();
+                }
+                if($product->image2 === $image->id){
+                    $product->image2 = null;
+                    $product->save();
+                }
+                if($product->image3 === $image->id){
+                    $product->image3 = null;
+                    $product->save();
+                }
+                if($product->image4 === $image->id){
+                    $product->image4 = null;
+                    $product->save();
+                }
+            });
+        }
+        
+        // 削除
+        Image::findOrFail($id)->delete();
+
         // ファイル削除
         if(Storage::exists($filePath)) {
             Storage::delete($filePath);
         }
-
-        // 削除
-        Image::findOrFail($id)->delete();
 
         // 一覧画面に戻る
         return redirect()
