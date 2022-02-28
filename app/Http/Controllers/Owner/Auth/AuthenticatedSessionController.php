@@ -48,7 +48,7 @@ class AuthenticatedSessionController extends Controller
         $request->session()->invalidate();
 
         $request->session()->regenerateToken();
-
-        return redirect('/owner');
+        // welcomeページを削除しているので、ログインに遷移させる
+        return redirect('/owner/login');
     }
 }
