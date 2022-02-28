@@ -25,9 +25,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('owner.welcome');
-});
+// 
+// Route::get('/', function () {
+//     return view('owner.welcome');
+// });
 
 // 商品管理
 Route::resource('products',ProductController::class)
@@ -51,19 +52,18 @@ Route::resource('images',ImageController::class)
     ->middleware('auth:owners')
     ->except(['show']);
         
-
+// ダッシュボード
 Route::get('/dashboard', function () {
     return view('owner.dashboard');
 })->middleware(['auth:owners'])->name('dashboard');
 
+// オーナー登録は、管理者が行うのでコメント
+// Route::get('/register', [RegisteredUserController::class, 'create'])
+//                 ->middleware('guest')
+//                 ->name('register');
 
-
-Route::get('/register', [RegisteredUserController::class, 'create'])
-                ->middleware('guest')
-                ->name('register');
-
-Route::post('/register', [RegisteredUserController::class, 'store'])
-                ->middleware('guest');
+// Route::post('/register', [RegisteredUserController::class, 'store'])
+//                 ->middleware('guest');
 
 Route::get('/login', [AuthenticatedSessionController::class, 'create'])
                 ->middleware('guest')
