@@ -144,12 +144,12 @@ class ImageController extends Controller
         $image = Image::findOrFail($id);
         $filePath = 'public/products/' . $image->filename;
 
+        // 商品で画像を使用しているかチェックし、使用していたら、nullをセット
         $imageInProducts = Product::where('image1',$image->id)
                         ->orWhere('image2',$image->id)
                         ->orWhere('image3',$image->id)
                         ->orWhere('image4',$image->id)
-                        ->get();
-        
+                        ->get();        
         if($imageInProducts) {
             $imageInProducts->each(function($product) use($image) {
                 if($product->image1 === $image->id){
