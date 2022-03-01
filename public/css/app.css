@@ -722,6 +722,9 @@ select {
 .mt-32 {
   margin-top: 8rem;
 }
+.mb-1 {
+  margin-bottom: 0.25rem;
+}
 .block {
   display: block;
 }
