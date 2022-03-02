@@ -10,6 +10,13 @@ use Illuminate\Support\Facades\DB;
 
 class ItemController extends Controller
 {
+    // コンストラクタ
+    public function __construct()
+    {
+        // 認証チェック
+        $this->middleware('auth:users');
+        
+    }
     //
     public function index()
     {
@@ -43,5 +50,12 @@ class ItemController extends Controller
         // dd($stocks,$products);
 
         return view('user.index',compact('products'));
+    }
+    //
+    public function show($id)
+    {
+        $product = Product::findOrFail($id);
+
+        return view('user.show',compact('product'));
     }
 }
