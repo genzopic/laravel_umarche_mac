@@ -44,7 +44,7 @@ Route::prefix('shops')
             Route::get('edit/{shop}', [ShopController::class, 'edit'])
                 ->name('shops.edit');
             Route::post('update/{shop}', [ShopController::class, 'update'])
-            ->name('shops.update');
+                ->name('shops.update');
             });
 
 // 画像管理

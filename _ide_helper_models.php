@@ -39,6 +39,29 @@ namespace App\Models{
 
 namespace App\Models{
 /**
+ * App\Models\Cart
+ *
+ * @property int $id
+ * @property int $user_id
+ * @property int $product_id
+ * @property int $quantity
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @method static \Illuminate\Database\Eloquent\Builder|Cart newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Cart newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|Cart query()
+ * @method static \Illuminate\Database\Eloquent\Builder|Cart whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Cart whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Cart whereProductId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Cart whereQuantity($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Cart whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Cart whereUserId($value)
+ */
+	class Cart extends \Eloquent {}
+}
+
+namespace App\Models{
+/**
  * App\Models\Image
  *
  * @property int $id
@@ -145,6 +168,9 @@ namespace App\Models{
  * @property-read \App\Models\Shop $shop
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Stock[] $stock
  * @property-read int|null $stock_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|Product[] $users
+ * @property-read int|null $users_count
+ * @method static \Database\Factories\ProductFactory factory(...$parameters)
  * @method static \Illuminate\Database\Eloquent\Builder|Product newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Product newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Product query()
@@ -230,6 +256,7 @@ namespace App\Models{
  * @property int $quantity
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @method static \Database\Factories\StockFactory factory(...$parameters)
  * @method static \Illuminate\Database\Eloquent\Builder|Stock newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Stock newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Stock query()
@@ -257,6 +284,8 @@ namespace App\Models{
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
  * @property-read int|null $notifications_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Product[] $products
+ * @property-read int|null $products_count
  * @property-read \Illuminate\Database\Eloquent\Collection|\Laravel\Sanctum\PersonalAccessToken[] $tokens
  * @property-read int|null $tokens_count
  * @method static \Database\Factories\UserFactory factory(...$parameters)
