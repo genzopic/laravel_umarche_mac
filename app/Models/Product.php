@@ -9,6 +9,7 @@ use App\Models\Shop;
 use App\Models\SecondaryCategory;
 use App\Models\Image;
 use App\Models\Stock;
+use App\Models\User;
 
 class Product extends Model
 {
@@ -57,6 +58,15 @@ class Product extends Model
     {
         // 1:N
         return $this->hasMany(Stock::class);
+    }
+    public function users()
+    {
+        // N:N
+        // 第2引数で中間テーブル名
+        // 中間テーブルのカラム取得
+        // デフォルトでは関連付けるカラム(user_idと product_id)のみ取得
+        return $this->belongsToMany(Product::class,'carts')
+                    ->withPivot(['id','quantity']);
     }
 
 }
