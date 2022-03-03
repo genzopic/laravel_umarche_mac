@@ -62,7 +62,9 @@
                             {{-- カテゴリ --}}
                             <h2 class="mb-4 text-sm title-font text-gray-500 tracking-widest">{{ $product->category->name }}</h2>
                             {{-- 商品名 --}}
-                            <h1 class="mb-4 text-gray-900 text-3xl title-font font-medium">{{ $product->name }}</h1>
+                            <h1 class="text-gray-900 text-3xl title-font font-medium">{{ $product->name }}</h1>
+                            {{-- 商品ID --}}
+                            <p class="mb-4 text-sm text-gray-400">{{$product->id}}</p>
                             {{-- インフォメーション --}}
                             <p class="mb-4 leading-relaxed">{{ $product->information }}</p>
                             <div class="flex justify-around items-center">
@@ -75,11 +77,10 @@
                                 <div class="flex items-center">
                                     <span class="mr-3">数量</span>
                                     <div class="relative">
-                                        <select class="rounded border appearance-none border-gray-300 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 text-base pl-3 pr-10">
-                                            <option>SM</option>
-                                            <option>M</option>
-                                            <option>L</option>
-                                            <option>XL</option>
+                                        <select name="quantity" class="rounded border appearance-none border-gray-300 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-200 focus:border-indigo-500 text-base pl-3 pr-10">
+                                            @for ($i = 1;$i <= $quantity; $i++)
+                                                <option value="{{$i}}">{{$i}}</option>
+                                            @endfor
                                         </select>
                                     </div>
                                 </div>
