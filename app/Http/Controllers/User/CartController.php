@@ -26,7 +26,7 @@ class CartController extends Controller
         return view('user.cart',
             compact('products','totalPrice'));
     }
-    //
+    // 追加
     public function add(Request $request)
     {
         // dd($request->product_id);
@@ -46,5 +46,15 @@ class CartController extends Controller
         // カートへ移動
         return redirect()->route('user.cart.index');
 
+    }
+    // 削除
+    public function delete($id)
+    {
+        Cart::where('product_id',$id)
+            ->where('user_id',Auth::id())
+            ->delete();
+
+            // カートへ移動
+        return redirect()->route('user.cart.index');
     }
 }
