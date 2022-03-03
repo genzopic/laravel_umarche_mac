@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 //
 use App\Models\Cart;
-use Mockery\Generator\Parameter;
 use Illuminate\Support\Facades\Auth;        // ログインユーザー
 
 class CartController extends Controller
