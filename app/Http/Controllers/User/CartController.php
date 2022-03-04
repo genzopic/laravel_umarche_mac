@@ -105,7 +105,7 @@ class CartController extends Controller
             // 1 回限りの購入には payment モードを使用します。
             'mode' => 'payment',
             // 成功時に戻るページ
-            'success_url' => route('user.items.index'),
+            'success_url' => route('user.cart.success'),
             // キャンセル時に戻るページ
             'cancel_url' => route('user.cart.index'),
         ]);
@@ -119,5 +119,15 @@ class CartController extends Controller
         // Stripeの決済画面に直接リダイレクト
         return redirect($session->url,303);
 
+    }
+    // 決済成功
+    public function success() 
+    {
+        // カートの商品をクリア
+        Cart::where('user_id',Auth::id())->delete();
+
+        // 商品一覧へリダイレクト
+        return redirect()->route('user.items.index');
+        
     }
 }
