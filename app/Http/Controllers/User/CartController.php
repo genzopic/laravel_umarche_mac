@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Models\Cart;
 use Illuminate\Support\Facades\Auth;        // ログインユーザー
 use App\Models\User;
+use App\Models\Stock;
 
 class CartController extends Controller
 {
@@ -66,19 +67,38 @@ class CartController extends Controller
         $lineItems = [];
         // カートの中身を取得して、lineItemsにセット
         foreach ($products as $product) {
-            $lineItem = [
-                'name' => $product->name,
-                'description' => $product->information,
-                'amount' => $product->price,
-                'currency' => 'jpy',
-                'quantity' => $product->pivot->quantity,
-            ];
-            array_push($lineItems,$lineItem);
+            // 在庫チェック
+            $quantity = '';
+            $quantity = Stock::Where('product_id',$product->id)->sum('quantity');
+            if($product->pivot->quantity > $quantity) {
+                // 在庫がない場合は、買えないので、カートに戻す
+                return redirect()->route('user.cart.index');
+            } else {
+                $lineItem = [
+                    'name' => $product->name,
+                    'description' => $product->information,
+                    'amount' => $product->price,
+                    'currency' => 'jpy',
+                    'quantity' => $product->pivot->quantity,
+                ];
+                array_push($lineItems,$lineItem);
+           }
+           // 在庫確保
+           foreach($products as $product) {
+                Stock::create([
+                    'product_id' => $product->id,
+                    'type' => \Constant::PRODUCT_LIST['reduce'],           // 2:出庫
+                    'quantity' => $product->pivot->quantity * -1,
+                ]);
+           }
+           dd('test');
+
         }
         // dd($lineItems);
         \Stripe\Stripe::setApiKey(env('STRIPE_SECRET_KEY'));
 
         $session = \Stripe\Checkout\Session::create([
+            // ['card', 'konbini'] このパラメータがないとdashboardで管理？
             'payment_method_types' => ['card'],
             'line_items' => [$lineItems],
             'mode' => 'payment',
