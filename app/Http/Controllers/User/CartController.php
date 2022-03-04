@@ -107,7 +107,7 @@ class CartController extends Controller
             // 成功時に戻るページ
             'success_url' => route('user.cart.success'),
             // キャンセル時に戻るページ
-            'cancel_url' => route('user.cart.index'),
+            'cancel_url' => route('user.cart.cancel'),
         ]);
 
         // // 公開鍵のセット
@@ -129,5 +129,21 @@ class CartController extends Controller
         // 商品一覧へリダイレクト
         return redirect()->route('user.items.index');
         
+    }
+    // 決済キャンセル
+    public function cancel()
+    {
+        // 在庫を戻す
+        $user = User::findOrFail(Auth::id());
+        foreach ($user->products as $product) {
+            Stock::create([
+                'product_id' => $product->id,
+                'type' => \Constant::PRODUCT_LIST['add'],           // 1:入庫
+                'quantity' => $product->pivot->quantity,
+            ]);
+        }
+
+        // 商品一覧へリダイレクト
+        return redirect()->route('user.cart.index');
     }
 }
