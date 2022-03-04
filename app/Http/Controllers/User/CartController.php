@@ -91,24 +91,33 @@ class CartController extends Controller
                     'quantity' => $product->pivot->quantity * -1,
                 ]);
            }
-           dd('test');
-
         }
-        // dd($lineItems);
+        // 秘密鍵のセット
         \Stripe\Stripe::setApiKey(env('STRIPE_SECRET_KEY'));
 
+        // stripeのcheckoutセッションの作成
         $session = \Stripe\Checkout\Session::create([
-            // ['card', 'konbini'] このパラメータがないとdashboardで管理？
-            'payment_method_types' => ['card'],
+            // 支払い方法は、下記のパラメータで指定できるが、指定しないとdashboardで管理
+            //'payment_method_types' => ['card'],
+            // 販売する商品の定義
             'line_items' => [$lineItems],
+            // modeには、payment、subscription、setup の 3 つのモードがあります。
+            // 1 回限りの購入には payment モードを使用します。
             'mode' => 'payment',
+            // 成功時に戻るページ
             'success_url' => route('user.items.index'),
+            // キャンセル時に戻るページ
             'cancel_url' => route('user.cart.index'),
         ]);
 
-        $publicKey = env('STRIPE_PUBLIC_KEY');
-
-        return view('user.checkout',compact('session','publicKey'));
+        // // 公開鍵のセット
+        // $publicKey = env('STRIPE_PUBLIC_KEY');
+        // return view('user.checkout',compact('session','publicKey'));
+        //
+        // --上記の内容は不要になって、直接リダイレクトできるようになったので、下記に修正
+        //
+        // Stripeの決済画面に直接リダイレクト
+        return redirect($session->url,303);
 
     }
 }
