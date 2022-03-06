@@ -16,6 +16,21 @@ class ItemController extends Controller
     {
         // 認証チェック
         $this->middleware('auth:users');
+
+        // 販売中の商品かをチェック
+        $this->middleware(function(Request $request,$next) {
+            $id = $request->route()->parameter('item'); // productのidを取得
+            if(!is_null($id)){
+                // show/indexにアクセスするとnullになるので
+                // それ以外の場合（show/{item}）
+                $itemId = Product::availableItems()->where('products.id',$id)->exists();
+                if(!$itemId) {
+                    // 有効な商品がなkれば、404
+                    abort(404);     // 404画面表示
+                }
+            }
+            return $next($request);
+        });
         
     }
     //
