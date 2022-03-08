@@ -9,9 +9,8 @@ use App\Models\Product;
 use App\Models\Stock;
 use App\Models\PrimaryCategory;
 use Illuminate\Support\Facades\DB;
-// メール送信テスト
-use Illuminate\Support\Facades\Mail;
-use App\Mail\TestMail;
+//
+use App\Jobs\SendThanksMail; 
 
 class ItemController extends Controller
 {
@@ -41,7 +40,10 @@ class ItemController extends Controller
     public function index(Request $request)
     {
         // メール送信テスト
-        Mail::to('test@exsample.com')->send(new TestMail());
+        // 同期処理で送信
+        // Mail::to('test@exsample.com')->send(new TestMail());
+        // 非同期処理で送信
+        SendThanksMail::dispatch();
 
         // dd($request);
         $products = Product::availableItems()
