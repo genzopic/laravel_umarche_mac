@@ -9,6 +9,9 @@ use App\Models\Product;
 use App\Models\Stock;
 use App\Models\PrimaryCategory;
 use Illuminate\Support\Facades\DB;
+// メール送信テスト
+use Illuminate\Support\Facades\Mail;
+use App\Mail\TestMail;
 
 class ItemController extends Controller
 {
@@ -37,6 +40,9 @@ class ItemController extends Controller
     //
     public function index(Request $request)
     {
+        // メール送信テスト
+        Mail::to('test@exsample.com')->send(new TestMail());
+
         // dd($request);
         $products = Product::availableItems()
                     ->selectCategory($request->category ?? '0')
