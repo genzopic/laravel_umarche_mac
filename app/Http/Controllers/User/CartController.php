@@ -9,6 +9,7 @@ use App\Models\Cart;
 use Illuminate\Support\Facades\Auth;        // ログインユーザー
 use App\Models\User;
 use App\Models\Stock;
+use App\Services\CartService;
 
 class CartController extends Controller
 {
@@ -61,6 +62,13 @@ class CartController extends Controller
     // 決済
     public function checkout()
     {
+        /////
+        // カートの商品を取得
+        $items = Cart::where('user_id',Auth::id())->get();
+        // 
+        $products = CartService::getItemInCart($items);
+        /////
+
         $user = User::findOrFail(Auth::id());
         $products = $user->products;
 
