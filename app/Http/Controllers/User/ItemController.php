@@ -43,7 +43,7 @@ class ItemController extends Controller
         // 同期処理で送信
         // Mail::to('test@exsample.com')->send(new TestMail());
         // 非同期処理で送信
-        SendThanksMail::dispatch();
+        // SendThanksMail::dispatch();
 
         // dd($request);
         $products = Product::availableItems()
