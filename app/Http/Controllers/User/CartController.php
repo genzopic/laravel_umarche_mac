@@ -10,7 +10,8 @@ use Illuminate\Support\Facades\Auth;        // ログインユーザー
 use App\Models\User;
 use App\Models\Stock;
 use App\Services\CartService;
-use App\Jobs\SendThanksMail; 
+use App\Jobs\SendThanksMail;
+use App\Jobs\SendOrderedMail;
 
 class CartController extends Controller
 {
@@ -63,17 +64,6 @@ class CartController extends Controller
     // 決済
     public function checkout()
     {
-        /////
-        // カートの商品を取得
-        $items = Cart::where('user_id',Auth::id())->get();
-        // 
-        $products = CartService::getItemInCart($items);
-
-        $user = User::findOrFail(Auth::id());
-        SendThanksMail::dispatch($products,$user);
-        dd('ユーザーメール送信テスト');
-        /////
-
         $user = User::findOrFail(Auth::id());
         $products = $user->products;
 
@@ -136,6 +126,23 @@ class CartController extends Controller
     // 決済成功
     public function success() 
     {
+        /////
+        // カートの商品を取得
+        $items = Cart::where('user_id',Auth::id())->get();
+        $products = CartService::getItemInCart($items);
+
+        // ユーザーへ注文メール
+        $user = User::findOrFail(Auth::id());
+        SendThanksMail::dispatch($products,$user);
+
+        // オーナーへ注文メール
+        foreach($products as $product)
+        {
+            SendOrderedMail::dispatch($product,$user);
+        }
+        // dd('ユーザーメール送信テスト');
+        /////
+
         // カートの商品をクリア
         Cart::where('user_id',Auth::id())->delete();
 

@@ -39,6 +39,15 @@ class CartService
             // 配列に追加
             array_push($products, $result); 
         }
+        // $productsの中身の例
+        // array:6 [▼
+        //     "id" => 130
+        //     "name" => "山田 裕太"
+        //     "price" => 59717
+        //     "ownerName" => "test1"
+        //     "email" => "test1@test.com"
+        //     "quantity" => 1
+        //     ]
         return $products;
     }
 
